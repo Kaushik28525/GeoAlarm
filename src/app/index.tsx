@@ -1,98 +1,230 @@
-import * as Device from 'expo-device';
-import { Platform, StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-
-import { AnimatedIcon } from '@/components/animated-icon';
-import { HintRow } from '@/components/hint-row';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { WebBadge } from '@/components/web-badge';
-import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
-
-function getDevMenuHint() {
-  if (Platform.OS === 'web') {
-    return <ThemedText type="small">use browser devtools</ThemedText>;
-  }
-  if (Device.isDevice) {
-    return (
-      <ThemedText type="small">
-        shake device or press <ThemedText type="code">m</ThemedText> in terminal
-      </ThemedText>
-    );
-  }
-  const shortcut = Platform.OS === 'android' ? 'cmd+m (or ctrl+m)' : 'cmd+d';
-  return (
-    <ThemedText type="small">
-      press <ThemedText type="code">{shortcut}</ThemedText>
-    </ThemedText>
-  );
-}
+import { useRouter } from "expo-router";
+import { useState } from "react";
+import {
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function HomeScreen() {
+  const [destination, setDestination] = useState("");
+  const router = useRouter();
   return (
-    <ThemedView style={styles.container}>
-      <SafeAreaView style={styles.safeArea}>
-        <ThemedView style={styles.heroSection}>
-          <AnimatedIcon />
-          <ThemedText type="title" style={styles.title}>
-            Welcome to&nbsp;Expo
-          </ThemedText>
-        </ThemedView>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.content}>
+        {/* Header */}
+        <View style={styles.header}>
+          <Text style={styles.logo}>Travel Wake</Text>
+          <Text style={styles.subtitle}>Never miss your stop again.</Text>
+        </View>
 
-        <ThemedText type="code" style={styles.code}>
-          get started
-        </ThemedText>
+        {/* Main Card */}
+        <View style={styles.card}>
+          <Text style={styles.question}>Where are you going?</Text>
 
-        <ThemedView type="backgroundElement" style={styles.stepContainer}>
-          <HintRow
-            title="Try editing"
-            hint={<ThemedText type="code">src/app/index.tsx</ThemedText>}
+          <Text style={styles.label}>Destination</Text>
+
+          <TextInput
+            style={styles.input}
+            placeholder="e.g. Puri Beach"
+            placeholderTextColor="#8B8B93"
+            value={destination}
+            onChangeText={setDestination}
           />
-          <HintRow title="Dev tools" hint={getDevMenuHint()} />
-          <HintRow
-            title="Fresh start"
-            hint={<ThemedText type="code">npm run reset-project</ThemedText>}
-          />
-        </ThemedView>
 
-        {Platform.OS === 'web' && <WebBadge />}
-      </SafeAreaView>
-    </ThemedView>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => {
+              if (!destination.trim()) {
+                return;
+              }
+
+              router.push({
+                pathname: "/journey",
+                params: {
+                  destination: destination.trim(),
+                },
+              });
+            }}
+          >
+            <Text style={styles.buttonText}>Start Journey</Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* Recent destinations */}
+        <View style={styles.recentSection}>
+          <Text style={styles.sectionTitle}>Recent destinations</Text>
+
+          <View style={styles.recentRow}>
+            <TouchableOpacity
+              style={styles.placeCard}
+              onPress={() => setDestination("Puri Beach")}
+            >
+              <Text style={styles.placeIcon}>📍</Text>
+              <Text style={styles.placeName}>Puri Beach</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.placeCard}
+              onPress={() => setDestination("Cuttack")}
+            >
+              <Text style={styles.placeIcon}>📍</Text>
+              <Text style={styles.placeName}>Cuttack</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        {/* Info */}
+        <View style={styles.infoBox}>
+          <Text style={styles.infoIcon}>😴</Text>
+          <View style={styles.infoTextContainer}>
+            <Text style={styles.infoTitle}>Sleep while you travel</Text>
+            <Text style={styles.infoText}>
+              We'll alert you before you reach your destination.
+            </Text>
+          </View>
+        </View>
+      </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    flexDirection: 'row',
+    backgroundColor: "#0F1117",
   },
-  safeArea: {
+
+  content: {
     flex: 1,
-    paddingHorizontal: Spacing.four,
-    alignItems: 'center',
-    gap: Spacing.three,
-    paddingBottom: BottomTabInset + Spacing.three,
-    maxWidth: MaxContentWidth,
+    paddingHorizontal: 20,
+    paddingTop: 30,
   },
-  heroSection: {
-    alignItems: 'center',
-    justifyContent: 'center',
+
+  header: {
+    marginBottom: 30,
+  },
+
+  logo: {
+    fontSize: 32,
+    fontWeight: "800",
+    color: "#FFFFFF",
+  },
+
+  subtitle: {
+    marginTop: 6,
+    fontSize: 16,
+    color: "#9CA3AF",
+  },
+
+  card: {
+    backgroundColor: "#191C25",
+    borderRadius: 20,
+    padding: 20,
+    marginBottom: 28,
+  },
+
+  question: {
+    fontSize: 22,
+    fontWeight: "700",
+    color: "#FFFFFF",
+    marginBottom: 20,
+  },
+
+  label: {
+    fontSize: 14,
+    color: "#9CA3AF",
+    marginBottom: 8,
+  },
+
+  input: {
+    height: 54,
+    borderRadius: 14,
+    backgroundColor: "#252936",
+    paddingHorizontal: 16,
+    fontSize: 16,
+    color: "#FFFFFF",
+    marginBottom: 16,
+  },
+
+  button: {
+    height: 54,
+    borderRadius: 14,
+    backgroundColor: "#7C5CFC",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  buttonText: {
+    color: "#FFFFFF",
+    fontSize: 16,
+    fontWeight: "700",
+  },
+
+  recentSection: {
+    marginBottom: 24,
+  },
+
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: "700",
+    color: "#FFFFFF",
+    marginBottom: 12,
+  },
+
+  recentRow: {
+    flexDirection: "row",
+    gap: 12,
+  },
+
+  placeCard: {
     flex: 1,
-    paddingHorizontal: Spacing.four,
-    gap: Spacing.four,
+    backgroundColor: "#191C25",
+    borderRadius: 16,
+    padding: 16,
   },
-  title: {
-    textAlign: 'center',
+
+  placeIcon: {
+    fontSize: 22,
+    marginBottom: 8,
   },
-  code: {
-    textTransform: 'uppercase',
+
+  placeName: {
+    color: "#FFFFFF",
+    fontSize: 15,
+    fontWeight: "600",
   },
-  stepContainer: {
-    gap: Spacing.three,
-    alignSelf: 'stretch',
-    paddingHorizontal: Spacing.three,
-    paddingVertical: Spacing.four,
-    borderRadius: Spacing.four,
+
+  infoBox: {
+    flexDirection: "row",
+    backgroundColor: "#171A22",
+    borderRadius: 16,
+    padding: 16,
+    alignItems: "center",
+  },
+
+  infoIcon: {
+    fontSize: 28,
+    marginRight: 14,
+  },
+
+  infoTextContainer: {
+    flex: 1,
+  },
+
+  infoTitle: {
+    color: "#FFFFFF",
+    fontSize: 15,
+    fontWeight: "700",
+    marginBottom: 4,
+  },
+
+  infoText: {
+    color: "#9CA3AF",
+    fontSize: 13,
+    lineHeight: 19,
   },
 });
