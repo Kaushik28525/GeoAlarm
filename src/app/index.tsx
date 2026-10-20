@@ -17,7 +17,7 @@ export default function HomeScreen() {
       <View style={styles.content}>
         {/* Header */}
         <View style={styles.header}>
-          <Text style={styles.logo}>Travel Wake</Text>
+          <Text style={styles.logo}>GeoAlarm</Text>
           <Text style={styles.subtitle}>Never miss your stop again.</Text>
         </View>
 
@@ -76,6 +76,15 @@ export default function HomeScreen() {
             </TouchableOpacity>
           </View>
         </View>
+
+        <TouchableOpacity
+          style={[styles.button, { marginBottom: 16 }]}
+          onPress={() => router.push("/notification-test")}
+        >
+          <Text style={styles.buttonText}>
+            Open Notification Test
+          </Text>
+        </TouchableOpacity>
 
         {/* Info */}
         <View style={styles.infoBox}>

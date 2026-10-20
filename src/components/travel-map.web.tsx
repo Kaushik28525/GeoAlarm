@@ -1,4 +1,4 @@
-import { View, Text } from "react-native";
+import { Text, View } from "react-native";
 
 type Props = {
   latitude: number;
@@ -6,11 +6,7 @@ type Props = {
   title: string;
 };
 
-export default function TravelMap({
-  latitude,
-  longitude,
-  title,
-}: Props) {
+export default function TravelMap({ latitude, longitude, title }: Props) {
   return (
     <View
       style={{
@@ -21,9 +17,7 @@ export default function TravelMap({
         justifyContent: "center",
       }}
     >
-      <Text style={{ color: "white", fontSize: 18 }}>
-        {title}
-      </Text>
+      <Text style={{ color: "white", fontSize: 18 }}>{title}</Text>
       <Text style={{ color: "#9CA3AF" }}>
         {latitude.toFixed(5)}, {longitude.toFixed(5)}
       </Text>

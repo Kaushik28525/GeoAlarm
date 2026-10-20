@@ -29,6 +29,12 @@ export default function RootLayout() {
           name="active-journey"
           options={{ headerShown: false }}
         />
+        
+        <Stack.Screen
+          name="notification-test"
+          options={{ title: 'Notification Test' }}
+        />
+
       </Stack>
     </ThemeProvider>
   );

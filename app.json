@@ -11,19 +11,19 @@
       "icon": "./assets/expo.icon"
     },
     "android": {
-  "config": {
-    "googleMaps": {
-      "apiKey": "YOUR_GOOGLE_MAPS_API_KEY"
-    }
-  },
-  "adaptiveIcon": {
-    "backgroundColor": "#E6F4FE",
-    "foregroundImage": "./assets/images/android-icon-foreground.png",
-    "backgroundImage": "./assets/images/android-icon-background.png",
-    "monochromeImage": "./assets/images/android-icon-monochrome.png"
-  },
-  "predictiveBackGestureEnabled": false
-},
+      "config": {
+        "googleMaps": {
+          "apiKey": "YOUR_GOOGLE_MAPS_API_KEY"
+        }
+      },
+      "adaptiveIcon": {
+        "backgroundColor": "#E6F4FE",
+        "foregroundImage": "./assets/images/android-icon-foreground.png",
+        "backgroundImage": "./assets/images/android-icon-background.png",
+        "monochromeImage": "./assets/images/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false
+    },
     "web": {
       "output": "static",
       "favicon": "./assets/images/favicon.png"
@@ -37,11 +37,23 @@
           "image": "./assets/images/splash-icon.png",
           "imageWidth": 76
         }
+      ],
+      [
+        "expo-notifications",
+        {
+          "defaultChannel": "geoalarm-alerts"
+        }
       ]
     ],
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "24f9744b-1358-489b-8ecf-12b8d8013d30"
+      }
     }
   }
 }

@@ -1,16 +1,12 @@
-
+import { useMemo, useRef } from "react";
 import { useColorScheme, View } from "react-native";
 import { WebView } from "react-native-webview";
-import { useMemo, useRef } from "react";
 
 type Props = {
   latitude: number;
   longitude: number;
   title: string;
-  onLocationSelect?: (
-    latitude: number,
-    longitude: number
-  ) => void;
+  onLocationSelect?: (latitude: number, longitude: number) => void;
 };
 
 export default function TravelMap({
@@ -23,13 +19,9 @@ export default function TravelMap({
   const isDark = scheme === "dark";
   const webViewRef = useRef<WebView>(null);
 
-  const safeLatitude = Number.isFinite(latitude)
-    ? latitude
-    : 20.2961;
+  const safeLatitude = Number.isFinite(latitude) ? latitude : 20.2961;
 
-  const safeLongitude = Number.isFinite(longitude)
-    ? longitude
-    : 85.8245;
+  const safeLongitude = Number.isFinite(longitude) ? longitude : 85.8245;
 
   const html = useMemo(
     () => `
@@ -192,7 +184,7 @@ export default function TravelMap({
       </body>
     </html>
   `,
-    [safeLatitude, safeLongitude, title, isDark]
+    [safeLatitude, safeLongitude, title, isDark],
   );
 
   return (
@@ -216,24 +208,16 @@ export default function TravelMap({
         overScrollMode="never"
         onMessage={(event) => {
           try {
-            const point = JSON.parse(
-              event.nativeEvent.data
-            );
+            const point = JSON.parse(event.nativeEvent.data);
 
             if (
               Number.isFinite(point.latitude) &&
               Number.isFinite(point.longitude)
             ) {
-              onLocationSelect?.(
-                point.latitude,
-                point.longitude
-              );
+              onLocationSelect?.(point.latitude, point.longitude);
             }
           } catch (error) {
-            console.warn(
-              "Map selection error:",
-              error
-            );
+            console.warn("Map selection error:", error);
           }
         }}
         style={{
@@ -243,4 +227,4 @@ export default function TravelMap({
       />
     </View>
   );
-} 
+}
